@@ -14,8 +14,9 @@
 }
 
 .row {  
+    margin-top: 8px;
     display: flex;
-    gap: 5px;
+    gap: 8px;
 }
 
 .word {
@@ -30,3 +31,7 @@
     justify-content: center;
 }
 
+.greenBackground {
+    background-color: green;
+    color: white;
+}
