@@ -1,4 +1,4 @@
-const word_url = "https://words.dev-apis.com/word-of-the-day"
+const word_url = "https://words.dev-apis.com/word-of-the-day?random=1"
 let word = "";
 let id = 1;
 const loadingDiv = document.querySelector(".info-bar");
@@ -9,6 +9,7 @@ const getWord = async () => {
     const promise = await  fetch(word_url);
     const processedResponse = await promise.json();
     word = processedResponse.word;
+    console.log(word);
     isLoading = false;
     setLoading(isLoading);
 }
@@ -51,7 +52,7 @@ const validateWord = async (wordToCheck, divArray) =>{
             id = id + 1;
             if(id === 7){
                 document.removeEventListener("keydown", keyClick);
-                alert('You lose!');
+                alert(`You lose! word was ${word}`);
             }
         }
     } else {
