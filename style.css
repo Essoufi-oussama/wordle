@@ -8,8 +8,7 @@
 
 
 .wordle-game{
-    padding-top: 40px;
-    border-top: 1px solid black;
+    padding-top: 10px;
     margin: auto;
 }
 
@@ -34,4 +33,20 @@
 .greenBackground {
     background-color: green;
     color: white;
+}
+
+.hidden {
+    visibility: hidden;
+} 
+  
+
+.spiral {
+    font-size: 40px;
+    animation: spin 1.5s linear infinite;
+  }
+  
+@keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
 }

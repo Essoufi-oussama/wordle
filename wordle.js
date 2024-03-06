@@ -1,17 +1,21 @@
 const word_url = "https://words.dev-apis.com/word-of-the-day"
 let word = "";
 let id = 1;
+const loadingDiv = document.querySelector(".info-bar");
 
 const getWord = async () => {
+    let isLoading = true;
+    setLoading(isLoading);
     const promise = await  fetch(word_url);
     const processedResponse = await promise.json();
     word = processedResponse.word;
+    isLoading = false;
+    setLoading(isLoading);
 }
 
 const validateWord = async (wordToCheck, divArray) =>{
-    // the two lines below looks weird but i did so user will not be able to click when he does post request
-    document.removeEventListener("keydown", keyClick);
-    document.addEventListener("keydown", keyClick);
+    isLoading = true;
+    setLoading(isLoading);
     const wordTosubmit = {
         word: wordToCheck
     };
@@ -25,32 +29,34 @@ const validateWord = async (wordToCheck, divArray) =>{
             });
 
     const processedResponse = await promise.json();
-        if (processedResponse.validWord){
-            if (wordToCheck === word){
-                alert("you win!");
-                for(let i = 0; i < divArray.length; i++ ){
-                    divArray[i].style.cssText = "background-color: green; color: white;"
-                }
-                document.removeEventListener("keydown", keyClick);
-            } else {
-                for(let i= 0; i < divArray.length; i++){
-                    if(wordToCheck[i] === word[i] ){
-                        divArray[i].style.cssText = "background-color: green;"
-                    }else if(word.includes(wordToCheck[i])){
-                        divArray[i].style.cssText = "background-color: yellow;"
-                    }else{
-                        divArray[i].style.cssText = "background-color: gray;"
-                    }
-                }
-                id = id + 1;
-                if(id === 7){
-                    document.removeEventListener("keydown", keyClick);
-                    alert('You lose!');
+    isLoading = false;
+    setLoading(isLoading);
+    if (processedResponse.validWord){
+        if (wordToCheck === word){
+            alert("you win!");
+            for(let i = 0; i < divArray.length; i++ ){
+                divArray[i].style.cssText = "background-color: green; color: white;"
+            }
+            document.removeEventListener("keydown", keyClick);
+        } else {
+            for(let i= 0; i < divArray.length; i++){
+                if(wordToCheck[i] === word[i] ){
+                    divArray[i].style.cssText = "background-color: green;"
+                }else if(word.includes(wordToCheck[i])){
+                    divArray[i].style.cssText = "background-color: yellow;"
+                }else{
+                    divArray[i].style.cssText = "background-color: gray;"
                 }
             }
-        } else {
-            alert("Invalid Word");       
-        }       
+            id = id + 1;
+            if(id === 7){
+                document.removeEventListener("keydown", keyClick);
+                alert('You lose!');
+            }
+        }
+    } else {
+        alert("Invalid Word");       
+    }       
 }
 
  window.onload = getWord();
@@ -97,4 +103,9 @@ const validateWord = async (wordToCheck, divArray) =>{
         }
      }
 }
+
+function setLoading(isLoading) {
+    loadingDiv.classList.toggle("hidden", !isLoading);
+}
+
 document.addEventListener("keydown", keyClick);
